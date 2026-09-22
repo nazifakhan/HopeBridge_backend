@@ -16,12 +16,18 @@ npm run dev
 ## Deploy to Vercel
 
 1. Push this project to GitHub, GitLab, or Bitbucket.
-2. Import the repository into Vercel. Vercel will use `api/index.js` through the included `vercel.json`.
+2. Import the repository into Vercel. Vercel automatically deploys `api/index.js` as the serverless API entrypoint.
 3. In the Vercel project settings, add these environment variables for the Production, Preview, and Development environments:
    - `MONGO_URI`: your MongoDB Atlas connection string for the `digital_heroes` database.
    - `JWT_SECRET`: a long, random secret.
    - `CLIENT_URL`: the deployed frontend origin, for example `https://your-frontend.vercel.app`.
-4. Deploy and verify `https://your-project.vercel.app/api/health`.
+4. In MongoDB Atlas, add `0.0.0.0/0` to Network Access (or allow the Vercel egress IPs if your plan supports a restricted allowlist), and ensure the database user has access to `digital_heroes`.
+5. Deploy and verify `https://your-project.vercel.app/api/health`.
+
+If the deployment returns `Database connection failed`, check the Vercel Function
+logs for the underlying error. The most common causes are a missing `MONGO_URI`,
+an unencoded username/password (URL-encode special characters), or MongoDB Atlas
+Network Access blocking Vercel.
 
 Do not commit `.env`; production secrets must be configured in Vercel project settings.
 
