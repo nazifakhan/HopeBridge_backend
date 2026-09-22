@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { protect } from "../middleware/auth.js";
+import { createScore, deleteScore, getScores, updateScore } from "../controllers/scoreController.js";
+const router = Router();
+router.use(protect);
+router.get("/", getScores);
+router.post("/", createScore);
+router.put("/:id", updateScore);
+router.delete("/:id", deleteScore);
+export default router;

@@ -1,0 +1,24 @@
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import authRoutes from "./routes/authRoutes.js";
+import scoreRoutes from "./routes/scoreRoutes.js";
+import charityRoutes from "./routes/charityRoutes.js";
+import drawRoutes from "./routes/drawRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
+import adminOverviewRoutes from "./routes/adminOverviewRoutes.js";
+import errorHandler from "./middleware/errorHandler.js";
+
+const app = express();
+app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
+app.use(express.json());
+app.use(morgan("dev"));
+app.get("/api/health", (req, res) => res.json({ message: "Digital Heroes API is healthy" }));
+app.use("/api/auth", authRoutes);
+app.use("/api/scores", scoreRoutes);
+app.use("/api/charities", charityRoutes);
+app.use("/api/draws", drawRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/admin-overview", adminOverviewRoutes);
+app.use(errorHandler);
+export default app;
